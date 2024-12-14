@@ -10,7 +10,7 @@ import { error, log } from 'console';
 export class FileSystemDataSource implements LogDataSource{
 
   private readonly logPath = 'logs/';
-  private readonly allLogPath     = 'logs/logs-low.log';
+  private readonly allLogPath     = 'logs/logs-all.log';
   private readonly mediumLogPath  = 'logs/logs-medium.log';
   private readonly highLogPath    = 'logs/logs-high.log';
   
