@@ -1,3 +1,6 @@
+import fs from 'fs';
+import path from "path";
+
 import { LogEntity, LogSeverityLevel } from "../../entities/log.entitity";
 import { LogRepository } from "../../repositories/log.respository";
 
@@ -27,20 +30,36 @@ export class CheckService implements CheckServiceUseCase{
         throw new Error( `Error on check service ${ url }` );
       } 
 
-      const log = new LogEntity(`Service ${url} working`, LogSeverityLevel.low);
+      const log = new LogEntity({
+        message: `Service ${url} working`, 
+        level: LogSeverityLevel.low,
+        origin: this.getFileName()
+      });
       this.logRepository.saveLog( log );
 
       this.successCallBack && this.successCallBack();
       return true;
     } catch (error) {
       const errorMessage = `${url} is not ok. ${ error }`;
-      const log = new LogEntity(errorMessage, LogSeverityLevel.high);
+      const log = new LogEntity({
+        message: errorMessage, 
+        level: LogSeverityLevel.high,
+        origin: this.getFileName()
+      });
       this.logRepository.saveLog( log );
 
       this.errorCallBack && this.errorCallBack( errorMessage );
       return false;
     }
   } 
+
+  private getFileName(): string {
+    const currentFilePath = __filename;
+    const filePath = fs.realpathSync(currentFilePath);
+    const currentFileName = path.basename(filePath);
+
+    return currentFileName;
+  }
 
 
 }
