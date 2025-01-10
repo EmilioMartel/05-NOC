@@ -2,6 +2,7 @@ import { CheckService } from "../domain/use-cases/checks/check-service";
 import { SendEmailLogs } from "../domain/use-cases/email/send-email-logs";
 import { FileSystemDataSource } from "../infrastructure/datasources/file-system.datasource";
 import { MongoLogDatasource } from "../infrastructure/datasources/mongo-log.datasource";
+import { PostgresLogDataSource } from "../infrastructure/datasources/postgres-log.datasource";
 import { LogRepositoryImpl } from "../infrastructure/repositories/log.repository.impl";
 import { CronService } from "./cron/cron-service";
 import { EmailService } from "./email/email.service";
@@ -9,7 +10,8 @@ import { EmailService } from "./email/email.service";
 
 const logRepository = new LogRepositoryImpl(
   // new FileSystemDataSource(),
-  new MongoLogDatasource(),
+  // new MongoLogDatasource(),
+  new PostgresLogDataSource()
 );
 
 const emailService = new EmailService();
@@ -45,7 +47,6 @@ export class Server {
     //       () => console.log( `${ url } is ok` ),
     //       ( error ) => console.log( error ),
     //     ).execute( url );
-    //     // new CheckService().execute("http://localhost:3000");
     //   }
     // );
     
